@@ -47,7 +47,7 @@ color: #121110;
     outline: navy;
 }
 
-.image-gen-btn{
+.image-gen-btn, .ai-gen-btn{
     background-color: rgb(9, 179, 60);
     cursor: pointer;
     color: #fff;
@@ -67,10 +67,22 @@ color: #121110;
     padding: 20px;
 }
 
-/* .my-generated-image {
-    width: 75%;
-    height: 350px;
-} */
+.my-generated-image {
+    width: 500px;                /* Set a fixed width */
+    height: auto;                /* Maintain aspect ratio */
+    border: 4px solid #4CAF50;   /* Add a green border */
+    border-radius: 20px;         /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Shadow effect */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth hover transition */
+    
+}
+
+/* Add hover effect */
+.my-generated-image:hover {
+    transform: scale(1.05);      /* Slightly enlarge on hover */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
 
 .image-container a {
     text-decoration: none;
@@ -93,4 +105,15 @@ color: #121110;
     height: 100px;
     display: block;
     cursor: pointer;
+}
+
+.loading-message {
+    margin-top: 90px;
+    font-size: 18px;
+    color: #af4c77;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
 }

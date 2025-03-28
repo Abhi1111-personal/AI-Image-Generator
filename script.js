@@ -4,7 +4,8 @@ let imageForm = document.getElementById("image-form")
 let imageText = document.getElementById("image-text")
 let generatedImage = document.getElementById("generated-image")
 let imageContainer = document.getElementById("image-shown")
-
+let imageBtn = document.getElementById("image-btn")
+let aiBtn = document.getElementById("ai-btn")
 async function fetchImages(category) {
     try {
         imageContainer.innerHTML = "";
@@ -47,13 +48,68 @@ async function fetchImages(category) {
         console.log("some problem with API")
     }
 }
+async function query(data){
+    // console.log("Ai-generation for" + {category})
+    console.log("inside-query-1")
+    
+    const response = await fetch(
+		"https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-dev",
+		{
+			headers: {
+				Authorization: `Bearer ${Hugging_Face_api_key}`,
+				"Content-Type": "application/json",
+			},
+			method: "POST",
+			body: JSON.stringify(data),
+		}
+	);
+	const result = await response.blob();
+    console.log(result)
+    console.log("return-query-1")
+	return result;
 
-imageForm.addEventListener('submit' ,(e)=>{
+}
+
+imageBtn.addEventListener('click' ,(e)=>{
     e.preventDefault();
     let inputValue = formInput.value;
 
     if(inputValue !==''){
         fetchImages(inputValue);
+        console.log(inputValue);
+    }else{
+        imageText.innerHTML="Pls!! provide some input";
+    }
+})
+
+
+aiBtn.addEventListener('click' ,(e)=>{
+    e.preventDefault();
+    let inputValue = formInput.value;
+    console.log("button pressed")
+    const para = document.createElement("p")
+    para.className= "loading-message"
+    para.innerHTML = "Loading..."
+    imageContainer.appendChild(para)
+    if(inputValue !==''){
+        query({"inputs": inputValue }).then((response) => {
+            console.log("recieve response")
+            const imageUrl = URL.createObjectURL(response);
+        
+            // Displaying the image in the document
+            console.log("displaying")
+            const anchor = document.createElement("a")
+            anchor.href = imageUrl
+            anchor.target = "_blank"
+            anchor.rel = "noopner noreferrer"
+            const img = document.createElement("img");
+            img.src = imageUrl;
+            img.alt = "Generated Image";
+            img.className = 'my-generated-image'
+            imageContainer.innerHTML = "";
+            anchor.appendChild(img);
+            imageContainer.appendChild(anchor);
+        });
         console.log(inputValue);
     }else{
         imageText.innerHTML="Pls!! provide some input";
